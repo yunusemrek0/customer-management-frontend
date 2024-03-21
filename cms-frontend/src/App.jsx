@@ -3,15 +3,27 @@ import './App.css'
 import FooterComponenet from './components/FooterComponenet'
 import HeadherComponent from './components/HeadherComponent'
 import ListProductComponent from './components/ListProductComponent'
+import {BrowserRouter,Route,Routes} from 'react-router-dom'
+import ProductComponent from './components/ProductComponent'
 
 function App() {
 
 
   return (
     <>
-     <HeadherComponent/>
-     <ListProductComponent/>
-     <FooterComponenet/>
+     <BrowserRouter>
+
+      <HeadherComponent/>
+        <Routes>
+          <Route path='/' element = {<ListProductComponent/>}></Route>
+          <Route path='/product/getAll' element = {<ListProductComponent/>}></Route>
+          <Route path='/product/save' element = {<ProductComponent/>}></Route>
+        </Routes>
+
+      <FooterComponenet/>
+
+     </BrowserRouter>
+
     </>
   )
 }

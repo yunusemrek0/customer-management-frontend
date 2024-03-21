@@ -1,9 +1,12 @@
 import React,{useEffect, useState} from 'react'
 import { listProduct } from '../services/ProductService'
+import { useNavigate } from 'react-router-dom'
 
 const ListProductComponent = () => {
 
     const [products,setProducts] = useState([])
+
+    const navigator = useNavigate();
 
     useEffect (()=> {
 
@@ -15,10 +18,14 @@ const ListProductComponent = () => {
 
     },[])
 
+    function addNewProduct(){
+        navigator('/product/save')
+    }
 
   return (
     <div className='container'>
-      <h2 className='text-center'>Ürün Listesi</h2>
+      <h2 className='text-center'>ÜRÜN LİSTESİ</h2>
+ 
       <table className='table table-striped table-bordered'>
         <thead>
           <tr>
@@ -47,6 +54,7 @@ const ListProductComponent = () => {
           }
         </tbody>
       </table>
+      <button className='btn btn-primary mb-2' onClick={addNewProduct}>ÜRÜN EKLE</button>
     </div>
   )
 }
