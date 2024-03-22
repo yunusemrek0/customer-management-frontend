@@ -15,9 +15,10 @@ function App() {
 
       <HeadherComponent/>
         <Routes>
-          <Route path='/' element = {<ListProductComponent/>}></Route>
+          
           <Route path='/product/getAll' element = {<ListProductComponent/>}></Route>
           <Route path='/product/save' element = {<ProductComponent/>}></Route>
+          <Route path='/product/update/:id' element = {<ProductComponent/>}></Route>
         </Routes>
 
       <FooterComponenet/>

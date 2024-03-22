@@ -22,6 +22,10 @@ const ListProductComponent = () => {
         navigator('/product/save')
     }
 
+    function updateProduct(id){
+        navigator(`/product/update/${id}`)
+    }
+
   return (
     <div className='container'>
       <h2 className='text-center'>ÜRÜN LİSTESİ</h2>
@@ -36,6 +40,7 @@ const ListProductComponent = () => {
             <th>VADELİ SATIŞ FİYAT</th>
             <th>NAKLİYELİ SATIŞ FİYAT</th>
             <th>STOK MİKTAR</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -49,6 +54,9 @@ const ListProductComponent = () => {
                 <td>{product.priceForForwardSale}</td>
                 <td>{product.priceForWithTransportation}</td>
                 <td>{product.stockAmountAsLiter}</td>
+                <td>
+                  <button className='btn btn-success mb-2' onClick={() => updateProduct(product.id)}>GÜNCELLE</button>
+                </td>
                 
               </tr>)
           }

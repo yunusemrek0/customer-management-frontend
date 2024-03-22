@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
-import { createProduct } from '../services/ProductService'
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react'
+import { createProduct, getProduct, updateProduct } from '../services/ProductService'
+import { useNavigate,useParams } from 'react-router-dom';
 
 const ProductComponent = () => {
 
@@ -12,6 +12,8 @@ const ProductComponent = () => {
     const[stockAmountAsLiter,setstockAmountAsLiter] = useState('')
     const[dealerId,setdealerId] = useState('')
 
+
+    const{id} = useParams();
    
 
     const [errors,setErrors] = useState({
@@ -26,17 +28,52 @@ const ProductComponent = () => {
 
     const navigator = useNavigate();
 
-    function saveProduct(e){
+    useEffect(()=>{
+        if(id){
+            getProduct(id).then((response) =>{
+                setName(response.data.name);
+                setpurchasePrice(response.data.purchasePrice);
+                setpriceForCash(response.data.priceForCash);
+                setpriceForForwardSale(response.data.priceForForwardSale);
+                setpriceForWithTransportation(response.data.priceForWithTransportation);
+                setstockAmountAsLiter(response.data.stockAmountAsLiter);
+                setdealerId(response.data.dealerId);
+                
+            }).catch(error => {
+                console.error(error);
+            })
+        }
+
+    },[id])
+
+    function saveOrUpdateProduct(e){
         e.preventDefault();
 
         if(validateForm()){
+
             const product = {name,purchasePrice,priceForCash,priceForForwardSale,priceForWithTransportation,stockAmountAsLiter,dealerId}
             console.log(product)
+
+            if(id){
+                updateProduct(id,product).then((response) => {
+                    console.log(response.data);
+                    navigator('/product/getAll')
+                }).catch(error =>{
+                    console.error(error);
+                })
+            }else{
+                 
+                createProduct(product).then((response) =>{
+                    console.log(response.data);
+                    navigator('/product/getAll')
+                }).catch(error => {
+                    console.error(error); 
+                })
+
+            }
+
     
-            createProduct(product).then((response) =>{
-                console.log(response.data);
-                navigator('/product/getAll')
-            })
+   
         }
 
 
@@ -102,12 +139,20 @@ const ProductComponent = () => {
         return valid;
     }
 
+    function pageTitle(){
+        if(id){
+            return <h2 className='text-center'>ÜRÜN GÜNCELLE</h2>
+        }else{
+            <h2 className='text-center'>ÜRÜN EKLE</h2>
+        }
+    }
+
   return (
     <div className='container'>
         <div className='row'>
 
             <div className='card col-md-6 offset-md-3 offset-md-3' >
-                <h2 className='text-center'>ÜRÜN EKLE</h2>
+                {pageTitle()}
                 <div className='card-body'>
                     <form>
                         <div className='form-group mb-2'>
@@ -152,7 +197,7 @@ const ProductComponent = () => {
                             {errors.name && <div className='invalid-feedback'> {errors.dealerId} </div> }
                         </div>
 
-                        <button className='btn btn-success' onClick={saveProduct} >KAYDET</button>
+                        <button className='btn btn-success' onClick={saveOrUpdateProduct} >KAYDET</button>
      
                     </form>
 
